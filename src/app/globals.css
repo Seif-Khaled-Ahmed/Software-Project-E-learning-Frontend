@@ -1,13 +1,40 @@
-/* src/app/globals.css */
+/* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Raleway", sans-serif;
 }
-/* Example: If you need to style a third party library that isn't tailwind compatible*/
-.leaflet-container {
-  height: 400px;
-  width: 100%;
+
+/* Animation for moving book elements (Optional) */
+@keyframes moveBooks {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateX(-10px) translateY(5px) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(15px) translateY(-10px) rotate(10deg);
+  }
+  75% {
+    transform: translateX(-5px) translateY(5px) rotate(-5deg);
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotate(0);
+  }
+}
+
+/* Classes for the moving book elements (Optional) */
+.book1 {
+  animation: moveBooks 15s linear infinite;
+}
+
+.book2 {
+  animation: moveBooks 18s linear infinite 2s; /* Delay and different duration */
+}
+
+.book3 {
+  animation: moveBooks 12s linear infinite 5s; /* Delay and different duration */
 }
