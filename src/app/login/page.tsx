@@ -1,4 +1,3 @@
-// Login.js
 "use client";
 
 import React, { useState } from "react";
@@ -25,10 +24,10 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const token = data.token; // Assuming the API returns a token
+        const { accessToken, role } = data;
 
-        // Save the token to localStorage
-        localStorage.setItem("token", token);
+        // Store the session token and role in localStorage
+        localStorage.setItem("session", JSON.stringify({ accessToken, role }));
 
         router.push("/dashboard");
       } else {
@@ -57,6 +56,7 @@ const Login: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
         </div>
         <div className="mb-6">
@@ -72,6 +72,7 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </div>
         <div className="flex items-center justify-between">
