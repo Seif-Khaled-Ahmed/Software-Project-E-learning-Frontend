@@ -24,10 +24,13 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const { accessToken, role } = data;
+        const { accessToken, role, _id } = data;
 
         // Store the session token and role in localStorage
-        localStorage.setItem("session", JSON.stringify({ accessToken, role }));
+        localStorage.setItem(
+          "session",
+          JSON.stringify({ accessToken, role, _id })
+        );
 
         router.push("/dashboard");
       } else {

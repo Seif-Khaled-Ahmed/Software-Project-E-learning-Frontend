@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import "./register.css";
+import "../login/login.css";
 
 interface RegisterData {
   name: string;

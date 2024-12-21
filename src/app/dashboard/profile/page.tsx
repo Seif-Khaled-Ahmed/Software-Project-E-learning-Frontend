@@ -22,7 +22,6 @@ const UnifiedProfile: React.FC = () => {
   const [expertise, setExpertise] = useState("");
   const [teachingInterests, setTeachingInterests] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -60,47 +59,6 @@ const UnifiedProfile: React.FC = () => {
     fetchProfile();
   }, [router]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = async () => {
-    const session = localStorage.getItem("session");
-    if (session && file) {
-      const parsedSession = JSON.parse(session);
-      if (parsedSession && parsedSession.accessToken) {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const response = await fetch(
-          `http://localhost:3000/users/${parsedSession.userId}/upload-profile-picture`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${parsedSession.accessToken}`,
-            },
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setProfile(
-            (prevProfile) =>
-              prevProfile && {
-                ...prevProfile,
-                profilePictureUrl: data.profilePictureUrl,
-              }
-          );
-        } else {
-          console.error("Failed to upload profile picture");
-        }
-      }
-    }
-  };
-
   const handleUpdate = async () => {
     const session = localStorage.getItem("session");
     if (session) {
@@ -111,8 +69,20 @@ const UnifiedProfile: React.FC = () => {
         }`;
         const body =
           profile?.role === "student"
-            ? { email, name, learningPreferences, subjectsOfInterest }
-            : { email, name, expertise, teachingInterests };
+            ? {
+                email,
+                name,
+                learningPreferences,
+                subjectsOfInterest,
+                profilePictureUrl: profile?.profilePictureUrl,
+              }
+            : {
+                email,
+                name,
+                expertise,
+                teachingInterests,
+                profilePictureUrl: profile?.profilePictureUrl,
+              };
 
         const response = await fetch(url, {
           method: "PUT",
@@ -133,30 +103,57 @@ const UnifiedProfile: React.FC = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    const session = localStorage.getItem("session");
+    if (session) {
+      const parsedSession = JSON.parse(session);
+      if (parsedSession && parsedSession.accessToken) {
+        if (
+          window.confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
+          )
+        ) {
+          const response = await fetch(
+            `http://localhost:3000/users/${parsedSession.userId}`,
+            {
+              method: "DELETE",
+            }
+          );
+
+          if (response.ok) {
+            localStorage.removeItem("session");
+            router.push("/login");
+          } else {
+            console.error("Failed to delete account");
+          }
+        }
+      }
+    }
+  };
+
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return (
+      <div
+        className="loading"
+        style={{
+          fontSize: "24px",
+          color: "blue",
+          padding: "20px",
+          textAlign: "center",
+        }}>
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <label htmlFor="profile-picture-upload">
-          <img
-            src={profile?.profilePictureUrl || "/images/profiledefault.jpg"}
-            alt="Profile Picture"
-            className="profile-picture"
-          />
-        </label>
-        <input
-          id="profile-picture-upload"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
+        <img
+          src={profile?.profilePictureUrl || "/images/profiledefault.jpg"}
+          alt="Profile Picture"
+          className="profile-picture"
         />
-        <button type="button" onClick={handleUpload}>
-          Upload New Picture
-        </button>
         <h1 className="profile-title">{profile?.name}</h1>
       </div>
 
@@ -229,6 +226,12 @@ const UnifiedProfile: React.FC = () => {
           Update Profile
         </button>
       </form>
+      <button
+        type="button"
+        className="delete-button"
+        onClick={handleDeleteAccount}>
+        Delete Account
+      </button>
     </div>
   );
 };
