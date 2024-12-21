@@ -82,3 +82,8 @@ a:hover {
   text-align: center;
   margin-top: 15px;
 }
+.login-image {
+  float: right; /* Float the image to the right */
+  margin-left: 20px; /* Add some space between the form and the image */
+  border-radius: 10px; /* Add rounded corners to the image */
+}
