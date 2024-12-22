@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL, // Backend base URL from your .env.local file
+  baseURL: 'http://localhost:3000',
 });
+
 
 // Attach Authorization token (if applicable)
 api.interceptors.request.use((config) => {
