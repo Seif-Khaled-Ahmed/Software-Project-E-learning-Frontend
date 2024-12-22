@@ -25,11 +25,13 @@ const Navbar: React.FC = () => {
             Profile
           </a>
         </li>
+        
         <li>
           <a href="/settings" onClick={() => router.push("/settings")}>
             Settings
           </a>
         </li>
+         
       </ul>
     </nav>
   );

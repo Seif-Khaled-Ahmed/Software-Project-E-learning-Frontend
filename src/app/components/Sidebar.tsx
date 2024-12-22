@@ -70,6 +70,29 @@ const Sidebar: React.FC = () => {
               Courses
             </a>
           </li>
+          {profile?.role === "instructor" ? (
+            <li>
+              <a
+                href="/Quiz/create"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/Quiz/create");
+                }}>
+                Create Quiz
+              </a>
+            </li>
+          ) : (
+            <li>
+              <a
+                href="/Quiz/start"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push("/Quiz/start");
+                }}>
+                Start Quiz
+              </a>
+            </li>
+          )}
         </ul>
       </nav>
     </aside>
