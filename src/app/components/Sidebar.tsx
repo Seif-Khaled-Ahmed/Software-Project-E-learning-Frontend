@@ -99,9 +99,11 @@ const Sidebar: React.FC = () => {
         <>
           <li>
             <a
-              href="/dashboard/instructor"
-              onClick={() => router.push("/dashboard/instructor")}>
-              Dashboard
+              href="/dashboard/instructor/view-students"
+              onClick={() =>
+                router.push("/dashboard/instructor/view-students")
+              }>
+              View-Studnets
             </a>
           </li>
           <li>
@@ -116,15 +118,6 @@ const Sidebar: React.FC = () => {
               href="/dashboard/instructor/courses"
               onClick={() => router.push("/dashboard/instructor/courses")}>
               Courses
-            </a>
-          </li>
-          <li>
-            <a
-              href="/dashboard/instructor/view-students"
-              onClick={() =>
-                router.push("/dashboard/instructor/view-students")
-              }>
-              View Students
             </a>
           </li>
           <li>
@@ -187,6 +180,31 @@ const Sidebar: React.FC = () => {
 
     return null;
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const session = localStorage.getItem("session");
+      if (session) {
+        const parsedSession = JSON.parse(session);
+        if (parsedSession && parsedSession.accessToken) {
+          const response = await fetch("http://localhost:3000/users/profile", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${parsedSession.accessToken}`,
+            },
+          });
+          const data = await response.json();
+          setProfile(data);
+        } else {
+          router.push("/login");
+        }
+      } else {
+        router.push("/login");
+      }
+    };
+
+    fetchProfile();
+  }, [router]);
 
   return (
     <aside className="sidebar">
