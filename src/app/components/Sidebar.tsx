@@ -115,6 +115,13 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <a
+              href="/dashboard/instructor/quiz"
+              onClick={() => router.push("/dashboard/profile")}>
+              quiz
+            </a>
+          </li>
+          <li>
+            <a
               href="/dashboard/instructor/courses"
               onClick={() => router.push("/dashboard/instructor/courses")}>
               Courses
