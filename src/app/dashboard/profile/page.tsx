@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import "./profile.css";
 
@@ -21,8 +21,11 @@ const UnifiedProfile: React.FC = () => {
   const [subjectsOfInterest, setSubjectsOfInterest] = useState<string[]>([]);
   const [expertise, setExpertise] = useState("");
   const [teachingInterests, setTeachingInterests] = useState<string[]>([]);
+  const [courseCategories, setCourseCategories] = useState<string[]>([]);
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -56,15 +59,66 @@ const UnifiedProfile: React.FC = () => {
       }
     };
 
+    const fetchCourseCategories = async () => {
+      const response = await fetch("http://localhost:3000/courses/categories", {
+        method: "GET",
+      });
+      const categories = await response.json();
+      setCourseCategories(categories);
+    };
+
     fetchProfile();
+    fetchCourseCategories();
   }, [router]);
+
+  useEffect(() => {
+    const uploadProfilePicture = async () => {
+      if (profilePicture) {
+        const session = localStorage.getItem("session");
+        if (session) {
+          const parsedSession = JSON.parse(session);
+          if (parsedSession && parsedSession.accessToken) {
+            const url = `http://localhost:3000/users/${parsedSession._id}/upload-profile-picture`;
+
+            const formData = new FormData();
+            formData.append("profilePicture", profilePicture);
+
+            try {
+              const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${parsedSession.accessToken}`,
+                },
+                body: formData,
+              });
+
+              if (response.ok) {
+                const data = await response.json();
+                setProfile(data); // Update profile with new picture URL
+                console.log("Profile picture uploaded successfully:", data);
+              } else {
+                console.error(
+                  "Failed to upload profile picture",
+                  response.statusText
+                );
+              }
+            } catch (error) {
+              console.error("Error during profile picture upload");
+            }
+          }
+        }
+      }
+    };
+
+    uploadProfilePicture();
+  }, [profilePicture]);
 
   const handleUpdate = async () => {
     const session = localStorage.getItem("session");
     if (session) {
       const parsedSession = JSON.parse(session);
       if (parsedSession && parsedSession.accessToken) {
-        const url = `http://localhost:3000/users/${parsedSession.userId}/${
+        const url = `http://localhost:3000/users/${parsedSession._id}/${
           profile?.role === "student" ? "student-profile" : "instructor-profile"
         }`;
         const body =
@@ -113,12 +167,14 @@ const UnifiedProfile: React.FC = () => {
             "Are you sure you want to delete your account? This action cannot be undone."
           )
         ) {
-          const response = await fetch(
-            `http://localhost:3000/users/${parsedSession.userId}`,
-            {
-              method: "DELETE",
-            }
-          );
+          const response = await fetch(`http://localhost:3000/users`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${parsedSession.accessToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: parsedSession._id }),
+          });
 
           if (response.ok) {
             localStorage.removeItem("session");
@@ -129,6 +185,31 @@ const UnifiedProfile: React.FC = () => {
         }
       }
     }
+  };
+
+  const handleProfilePictureClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleProfilePictureChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setProfilePicture(e.target.files?.[0] || null);
+  };
+
+  const handleAddSubjectOfInterest = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedCategory = event.target.value;
+    if (!subjectsOfInterest.includes(selectedCategory)) {
+      setSubjectsOfInterest([...subjectsOfInterest, selectedCategory]);
+    }
+  };
+
+  const handleRemoveSubjectOfInterest = (category: string) => {
+    setSubjectsOfInterest(
+      subjectsOfInterest.filter((item) => item !== category)
+    );
   };
 
   if (loading) {
@@ -150,9 +231,22 @@ const UnifiedProfile: React.FC = () => {
     <div className="profile-container">
       <div className="profile-header">
         <img
-          src={profile?.profilePictureUrl || "/images/profiledefault.jpg"}
+          src={
+            `http://localhost:3000${profile?.profilePictureUrl}` ||
+            "/images/profiledefault.jpg"
+          }
           alt="Profile Picture"
           className="profile-picture"
+          onClick={handleProfilePictureClick} // Add onClick event
+          style={{ cursor: "pointer" }}
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleProfilePictureChange}
         />
         <h1 className="profile-title">{profile?.name}</h1>
       </div>
@@ -190,13 +284,31 @@ const UnifiedProfile: React.FC = () => {
             </div>
             <div className="input-group">
               <label>Subjects of Interest:</label>
-              <input
-                type="text"
-                value={subjectsOfInterest.join(", ")}
-                onChange={(e) =>
-                  setSubjectsOfInterest(e.target.value.split(", "))
-                }
-              />
+              <select
+                value=""
+                onChange={handleAddSubjectOfInterest}
+                className="subjects-dropdown">
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {courseCategories.map((category) => (
+                  <option className="cat" key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              <ul className="subjects-list">
+                {subjectsOfInterest.map((category, index) => (
+                  <li key={index} className="subject-item">
+                    {category}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveSubjectOfInterest(category)}>
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           </>
         )}
@@ -222,7 +334,7 @@ const UnifiedProfile: React.FC = () => {
             </div>
           </>
         )}
-        <button type="button" className="update-button" onClick={handleUpdate}>
+        <button type="submit" className="update-button">
           Update Profile
         </button>
       </form>

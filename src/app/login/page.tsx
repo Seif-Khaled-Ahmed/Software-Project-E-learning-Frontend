@@ -31,8 +31,13 @@ const Login: React.FC = () => {
           "session",
           JSON.stringify({ accessToken, role, _id })
         );
-
-        router.push("/dashboard");
+        if (role === "student") {
+          router.push("/dashboard/student/recommend");
+        } else if (role === "instructor") {
+          router.push("/dashboard/instructor");
+        } else if (role === "admin") {
+          router.push("/dashboard/admin");
+        }
       } else {
         const data = await response.json();
         setError(data.message || "Login failed");
