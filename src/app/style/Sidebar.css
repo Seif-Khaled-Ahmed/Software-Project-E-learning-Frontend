@@ -1,41 +1,30 @@
 /* src/app/style/Sidebar.css */
 
 .sidebar {
-  width: 250px;
-  background: linear-gradient(to bottom, #283593, #3f51b5);
+  width: 250px; /* Reduced width */
+  background-color: #212121; /* Dark background color */
   color: #fff;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.8); /* More pronounced shadow */
   height: 100vh;
   position: fixed;
   overflow-y: auto;
   top: 0;
-  left: -250px;
+  left: 0;
   z-index: 20;
   transition: left 0.3s ease;
 }
 
 .sidebar::before {
-  /* Add a pseudo-element for the angled edge */
   content: "";
   position: absolute;
   top: 0;
-  right: -20px; /* Adjust the size of the angled edge */
-  border-top: 20px solid #3f51b5; /* Match the end color of the gradient */
-  border-left: 20px solid transparent;
+  right: -25px; /* Adjusted angled edge */
+  border-top: 25px solid #212121; /* Match background color */
+  border-left: 25px solid transparent;
 }
 
-.sidebar:hover {
-  left: 0;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.notification {
-  /* ... your notification styles ... */
-}
+/* ... notification styles ... */
 
 .profile-section {
   display: flex;
@@ -47,18 +36,19 @@
 }
 
 .profile-picture {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #5e35b1;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  margin-bottom: 15px;
+  border: 4px solid #714bb4; /* Darker border color */
+  box-shadow: 0 5px 80px rgba(249, 59, 59, 0.5); /* More pronounced shadow */
+  margin-bottom: 20px;
   transition: transform 0.3s ease;
 }
 
 .profile-picture:hover {
   transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Larger shadow on hover */
 }
 
 .profile-section h2 {
@@ -66,12 +56,12 @@
   font-weight: 700;
   margin-bottom: 5px;
   color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); /* More pronounced shadow */
 }
 
 .profile-section p {
   font-size: 1rem;
-  color: #d1c4e9;
+  color: #bdbdbd; /* Light gray text */
 }
 
 .sidebar nav ul {
@@ -91,7 +81,8 @@
   color: #fff;
   text-decoration: none;
   border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -101,19 +92,39 @@
 .sidebar nav ul li a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   transform: translateX(5px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar nav ul li a:active {
   background-color: rgba(255, 255, 255, 0.2);
   transform: translateX(0);
+  box-shadow: none;
 }
+
 .logout-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #d32f2f;
+  margin-top: 10px;
+  position: fixed;
+  padding: 5px 60px;
+  background-color: #d32f2f; /* Red */
   color: #fff;
-  border: none;
-  border-radius: 8px;
+  border: 4px solid #d32f2f; /* Red border */
+  border-radius: 100px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #251313;
+  /* Darker red on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    left: -230px; /* Hide sidebar off-screen */
+  }
+
+  .sidebar:hover {
+    left: 0; /* Show sidebar on hover */
+  }
 }

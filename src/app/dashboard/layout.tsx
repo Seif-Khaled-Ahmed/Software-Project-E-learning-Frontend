@@ -7,6 +7,7 @@ import StudentDashboard from "./student/page"; // Ensure this path is correct
 import InstructorDashboard from "./instructor/page"; // Ensure this path is correct
 import AdminDashboard from "./admin/page"; // Ensure this path is correct
 import "./dashboard.css";
+import SearchComponent from "../components/Search";
 
 export default function DashboardLayout({
   children,
@@ -25,14 +26,18 @@ export default function DashboardLayout({
 
   return (
     <div className="dashboard-layout">
+      <Sidebar /> {/* Sidebar on the left */}
       <div className="dashboard-content">
-        <Sidebar />
+        <nav className="upper-nav">
+          <SearchComponent userType={"student"} />
+        </nav>
 
-        {role === "student" && <StudentDashboard />}
-        {role === "instructor" && <InstructorDashboard />}
-        {role === "admin" && <AdminDashboard />}
-
-        {children}
+        <div className="main-card">
+          {role === "student" && <StudentDashboard />}
+          {role === "instructor" && <InstructorDashboard />}
+          {role === "admin" && <AdminDashboard />}
+          {children}
+        </div>
       </div>
     </div>
   );
