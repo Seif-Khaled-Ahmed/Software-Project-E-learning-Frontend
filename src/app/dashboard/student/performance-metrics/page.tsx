@@ -19,7 +19,7 @@ const PerformanceMetrics: React.FC = () => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await fetch("http://localhost:3000/progress/student-dashboard-data?userId=USER_ID");
+        const response = await fetch("http://localhost:3000/progress/student-dashboard-data?user_id");
         const data = await response.json();
         setCompletionRates(data.completionRates);
         setAverageScores(data.averageScores);
