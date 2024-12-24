@@ -7,6 +7,16 @@ interface Student {
   id: string;
   name: string;
   progress: string; // Add any additional fields your API returns
+  enrolledCourses?: Course[]; // Enrolled courses
+  completedCourses?: Course[]; // Completed courses
+}
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  difficulty: string;
 }
 
 const InstructorDashboard: React.FC = () => {
@@ -34,7 +44,41 @@ const InstructorDashboard: React.FC = () => {
 
       const data: Student[] = await response.json();
 
-      setStudents(data);
+      // Fetch enrolled and completed courses for each student
+      const studentsWithCourses = await Promise.all(
+        data.map(async (student) => {
+          try {
+            const enrolledCoursesResponse = await fetch(
+              `http://localhost:3000/students/${student.id}/enrolledCourses`
+            );
+            const completedCoursesResponse = await fetch(
+              `http://localhost:3000/students/${student.id}/completedCourses`
+            );
+
+            if (!enrolledCoursesResponse.ok || !completedCoursesResponse.ok) {
+              throw new Error(`Failed to fetch courses for student: ${student.name}`);
+            }
+
+            const enrolledCourses: Course[] = await enrolledCoursesResponse.json();
+            const completedCourses: Course[] = await completedCoursesResponse.json();
+
+            return {
+              ...student,
+              enrolledCourses,
+              completedCourses,
+            };
+          } catch (err) {
+            console.error(`Error fetching courses for ${student.name}:`, err);
+            return {
+              ...student,
+              enrolledCourses: [],
+              completedCourses: [],
+            }; // Default to empty if error occurs
+          }
+        })
+      );
+
+      setStudents(studentsWithCourses);
     } catch (err: any) {
       setError(err.message || "An unexpected error occurred");
     } finally {
@@ -71,6 +115,56 @@ const InstructorDashboard: React.FC = () => {
               <p>
                 <strong>Progress:</strong> {student.progress}
               </p>
+              <div className="enrolled-courses">
+                <h3>Enrolled Courses:</h3>
+                {student.enrolledCourses && student.enrolledCourses.length > 0 ? (
+                  <ul>
+                    {student.enrolledCourses.map((course) => (
+                      <li key={course.id}>
+                        <p>
+                          <strong>Title:</strong> {course.title}
+                        </p>
+                        <p>
+                          <strong>Description:</strong> {course.description}
+                        </p>
+                        <p>
+                          <strong>Category:</strong> {course.category}
+                        </p>
+                        <p>
+                          <strong>Difficulty:</strong> {course.difficulty}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No enrolled courses found for this student.</p>
+                )}
+              </div>
+              <div className="completed-courses">
+                <h3>Completed Courses:</h3>
+                {student.completedCourses && student.completedCourses.length > 0 ? (
+                  <ul>
+                    {student.completedCourses.map((course) => (
+                      <li key={course.id}>
+                        <p>
+                          <strong>Title:</strong> {course.title}
+                        </p>
+                        <p>
+                          <strong>Description:</strong> {course.description}
+                        </p>
+                        <p>
+                          <strong>Category:</strong> {course.category}
+                        </p>
+                        <p>
+                          <strong>Difficulty:</strong> {course.difficulty}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No completed courses found for this student.</p>
+                )}
+              </div>
             </div>
           ))
         ) : (
