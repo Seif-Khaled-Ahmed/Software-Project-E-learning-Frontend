@@ -1,0 +1,84 @@
+.courseDashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.courseDashboard h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0070f3;
+}
+
+.courseDashboard section {
+    margin-bottom: 30px;
+}
+
+.courseDashboard h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #0056b3;
+}
+
+.courseDashboard ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.courseDashboard li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.courseDashboard li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.courseDashboard p {
+    margin: 5px 0;
+}
+
+.courseDashboard button {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.courseDashboard button:hover {
+    background-color: #005bb5;
+}
+
+.courseDashboard input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.courseDashboard input[type="text"]:focus {
+    border-color: #0070f3;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 112, 243, 0.5);
+}
+
+.courseDashboard .noCourses {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+}
