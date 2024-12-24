@@ -150,33 +150,72 @@ const CoursesDashboard: React.FC = () => {
 
     return (
         <div className="courses-dashboard">
-            <h1>Course Dashboard</h1>
+            <h1>Course Dashboard</h1>                
 
-            <section className="courses-section">
-                <h2>All Courses</h2>
-                {loading ? (
-                    <p>Loading courses...</p>
-                ) : courses.length > 0 ? (
-                    <ul className="courses-list">
-                        {courses.map((course) => (
-                            <li key={course._id} className="course-item">
-                                <h3>{course.title}</h3>
-                                <p><strong>Description:</strong> {course.description}</p>
-                                <p><strong>Category:</strong> {course.category}</p>
-                                <p><strong>Difficulty:</strong> {course.difficulty}</p>
-                                <p><strong>Created By:</strong> {course.createdBy}</p>
-                                <p><strong>Created At:</strong> {new Date(course.createdAt).toLocaleDateString()}</p>
-                                <p><strong>Outdated:</strong> {course.isOutdated ? "Yes" : "No"}</p>
-                                
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No courses available.</p>
-                )}
+            <section>
+                <h2>Update Course Info</h2>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleUpdateCourse();
+                    }}
+                >
+                    <div>
+                        <label>Course ID:</label>
+                        <input
+                            type="text"
+                            name="courseId"
+                            value={updateCourseId}
+                            onChange={(e) => setUpdateCourseId(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>New Title:</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={updateData.title || ""}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <label>New Description:</label>
+                        <input
+                            type="text"
+                            name="description"
+                            value={updateData.description || ""}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <label>New Category:</label>
+                        <input
+                            type="text"
+                            name="category"
+                            value={updateData.category || ""}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div>
+                        <label>New Difficulty:</label>
+                        <select
+                            name="difficulty"
+                            value={updateData.difficulty || ""}
+                            onChange={handleInputChange}
+                        >
+                            <option value="" disabled>
+                                Select Difficulty
+                            </option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <button type="submit">Update Course</button>
+                </form>
+                {message && <p className="course-message">{message}</p>}
             </section>
-
-            
         </div>
     );
 };

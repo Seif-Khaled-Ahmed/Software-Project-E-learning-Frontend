@@ -167,7 +167,21 @@ const CoursesDashboard: React.FC = () => {
                                 <p><strong>Created By:</strong> {course.createdBy}</p>
                                 <p><strong>Created At:</strong> {new Date(course.createdAt).toLocaleDateString()}</p>
                                 <p><strong>Outdated:</strong> {course.isOutdated ? "Yes" : "No"}</p>
-                                
+                                <div className="course-actions">
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDeleteCourse(course._id)}
+                                    >
+                                        Delete Course
+                                    </button>
+                                    <button
+                                        className="outdated-button"
+                                        onClick={() => handleFlagOutdated(course._id)}
+                                        disabled={course.isOutdated}
+                                    >
+                                        {course.isOutdated ? "Outdated" : "Flag as Outdated"}
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>
