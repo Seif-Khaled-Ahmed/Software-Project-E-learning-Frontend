@@ -2,121 +2,93 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Chart, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line, Bar } from "react-chartjs-2";
+import Link from "next/link";
+import { Bar } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+import { CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import "./performance-metrics.css";
 
-// Register the required components
-Chart.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
+// Register the necessary components
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const PerformanceMetrics: React.FC = () => {
-  const [completionRates, setCompletionRates] = useState<number[]>([]);
-  const [averageScores, setAverageScores] = useState<number[]>([]);
-  const [engagementTrends, setEngagementTrends] = useState<number[]>([]);
-  const [recommendedModules, setRecommendedModules] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+const PerformanceMetricsPage: React.FC = () => {
+  const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
+  const [modules, setModules] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchMetrics = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/dashboard/student/performance-metrics");
+    const fetchPerformanceMetrics = async () => {
+      const session = localStorage.getItem("session");
+      if (session) {
+        const parsedSession = JSON.parse(session);
+        const response = await fetch(`http://localhost:3000/progress/dashboard/student/performance-metrics?user_id=${parsedSession._id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${parsedSession.accessToken}`,
+          },
+        });
         const data = await response.json();
-        setCompletionRates(data.completionRates || []);
-        setAverageScores(data.averageScores || []);
-        setEngagementTrends(data.engagementTrends || []);
+        setPerformanceMetrics({
+          ...data,
+          avgCompletionRate: isNaN(data.avgCompletionRate) ? 0 : data.avgCompletionRate,
+          avgScore: isNaN(data.avgScore) ? 0 : data.avgScore,
+        });
 
-        // Ensure data.modules and data.averageScores exist
-        if (data.modules && data.averageScores) {
-          const performanceMetric = data.averageScores.reduce((a: number, b: number) => a + b, 0) / data.averageScores.length;
-          const filteredModules = data.modules.filter((module: any) => {
-            if (performanceMetric < 50) return module.difficulty === 'Easy';
-            if (performanceMetric < 70) return module.difficulty === 'Medium';
-            return module.difficulty === 'Hard';
-          });
-          setRecommendedModules(filteredModules);
+        const modulesResponse = await fetch(`http://localhost:3000/modules/student?user_id=${parsedSession._id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${parsedSession.accessToken}`,
+          },
+        });
+        const modulesData = await modulesResponse.json();
+        if (Array.isArray(modulesData)) {
+          setModules(modulesData);
+        } else {
+          console.error("Modules data is not an array:", modulesData);
+          setModules([]);
         }
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching metrics:", error);
-        setLoading(false);
+      } else {
+        router.push("/login");
       }
     };
 
-    fetchMetrics();
-  }, []);
+    fetchPerformanceMetrics();
+  }, [router]);
 
-  if (loading) {
-    return (
-      <div className="loading">
-        Loading...
-      </div>
-    );
+  if (!performanceMetrics) {
+    return <div>Loading...</div>;
   }
 
+  const data = {
+    labels: ['Completion Rate', 'Average Score'],
+    datasets: [
+      {
+        label: 'Performance Metrics',
+        data: [performanceMetrics.avgCompletionRate, performanceMetrics.avgScore],
+        backgroundColor: ['#36A2EB', '#FFCE56'],
+      },
+    ],
+  };
+
   return (
-    <div className="performance-metrics-container">
+    <div className="performance-metrics-page">
       <h1>Performance Metrics</h1>
-      <div className="chart-container">
-        <h2>Course Completion Rates</h2>
-        <Bar
-          data={{
-            labels: ["Course 1", "Course 2", "Course 3", "Course 4"],
-            datasets: [
-              {
-                label: "Completion Rate",
-                data: completionRates,
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-              },
-            ],
-          }}
-        />
-      </div>
-      <div className="chart-container">
-        <h2>Average Scores</h2>
-        <Line
-          data={{
-            labels: ["Course 1", "Course 2", "Course 3", "Course 4"],
-            datasets: [
-              {
-                label: "Average Score",
-                data: averageScores,
-                backgroundColor: "rgba(153, 102, 255, 0.6)",
-                borderColor: "rgba(153, 102, 255, 1)",
-                fill: false,
-              },
-            ],
-          }}
-        />
-      </div>
-      <div className="chart-container">
-        <h2>Engagement Trends</h2>
-        <Line
-          data={{
-            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-            datasets: [
-              {
-                label: "Engagement",
-                data: engagementTrends,
-                backgroundColor: "rgba(255, 159, 64, 0.6)",
-                borderColor: "rgba(255, 159, 64, 1)",
-                fill: false,
-              },
-            ],
-          }}
-        />
-      </div>
-      <div className="chart-container">
-        <h2>Recommended Modules</h2>
-        <ul>
-          {recommendedModules.map((module, index) => (
-            <li key={index}>{module.name} - {module.difficulty}</li>
-          ))}
-        </ul>
-      </div>
+      <p>Total Courses: {performanceMetrics.totalCourses}</p>
+      <p>Average Completion Rate: {performanceMetrics.avgCompletionRate}%</p>
+      <p>Average Score: {performanceMetrics.avgScore}</p>
+      <h2>Performance Overview</h2>
+      <Bar data={data} />
+      <h2>Recommended Modules</h2>
+      <ul>
+        {modules.map((module) => (
+          <li key={module._id}>{module.title}</li>
+        ))}
+      </ul>
+      <Link href="/dashboard/student/quiz-results">
+        View Quiz Results
+      </Link>
     </div>
   );
 };
 
-export default PerformanceMetrics;
+export default PerformanceMetricsPage;

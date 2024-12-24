@@ -1,0 +1,76 @@
+/* Basic styling for the forum */
+.forum-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+  
+  .forum-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .threads-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .thread {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .thread-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .post {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-content {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .post-creator {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  .replies-list {
+    margin-top: 10px;
+    padding-left: 20px;
+    border-left: 2px solid #ddd;
+  }
+  
+  .reply {
+    background-color: #f1f1f1;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .reply-content {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .reply-creator {
+    font-size: 0.8rem;
+    color: #999;
+  }
+  
