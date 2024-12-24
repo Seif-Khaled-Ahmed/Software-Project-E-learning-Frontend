@@ -19,7 +19,7 @@ const InstructorAnalytics: React.FC = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await fetch("http://localhost:3000/progress/analytics?course_id");
+        const response = await fetch("http://localhost:3001/dashboard/instructor/analytics");
         const data = await response.json();
         setEngagementData(data.engagementTrends);
         setContentEffectiveness(data.contentEffectiveness);
@@ -33,6 +33,7 @@ const InstructorAnalytics: React.FC = () => {
   
     fetchAnalytics();
   }, []);
+  
   const handleDownload = () => {
     const data = {
       engagementData,
