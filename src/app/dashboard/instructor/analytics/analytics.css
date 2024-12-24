@@ -1,64 +1,32 @@
-.analytics-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .analytics-container h1 {
-    font-size: 2.5em;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .chart-container {
-    margin-bottom: 40px;
-  }
-  
-  .chart-container h2 {
-    font-size: 1.5em;
-    color: #555;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  .loading {
-    font-size: 24px;
-    color: blue;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .download-button {
-    display: block;
-    margin: 0 auto;
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .download-button:hover {
-    background-color: #0056b3;
-  }
-  
-  @media (max-width: 768px) {
-    .analytics-container {
-      padding: 10px;
-    }
-  
-    .analytics-container h1 {
-      font-size: 2em;
-    }
-  
-    .chart-container h2 {
-      font-size: 1.2em;
-    }
-  }
+.instructor-analytics-page {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instructor-analytics-page h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.instructor-analytics-page p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.instructor-analytics-page button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.instructor-analytics-page button:hover {
+  background-color: #0056b3;
+}

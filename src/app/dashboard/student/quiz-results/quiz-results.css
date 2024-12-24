@@ -1,35 +1,31 @@
-.performance-metrics-page {
+.quiz-results-page {
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.performance-metrics-page h1 {
+.quiz-results-page h1 {
   font-size: 24px;
   margin-bottom: 20px;
   color: #333;
 }
 
-.performance-metrics-page h2{
-  color: #333;
-}
-
-.performance-metrics-page p {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #555;
-}
-
-.performance-metrics-page ul {
+.quiz-results-page ul {
   list-style-type: none;
   padding: 0;
 }
 
-.performance-metrics-page li {
+.quiz-results-page li {
   background-color: #fff;
   margin: 10px 0;
   padding: 10px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-results-page p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
 }

@@ -2,163 +2,94 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Chart, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
-import { Line, Bar } from "react-chartjs-2";
+import { Bar } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+import { CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import "./analytics.css";
 
-// Register the required components
-Chart.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend);
+// Register the necessary components
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const InstructorAnalytics: React.FC = () => {
-  const [engagementData, setEngagementData] = useState<number[]>([]);
-  const [contentEffectiveness, setContentEffectiveness] = useState<number[]>([]);
-  const [assessmentResults, setAssessmentResults] = useState<number[]>([]);
-  const [moduleRatings, setModuleRatings] = useState<number[]>([]);
-  const [courseRating, setCourseRating] = useState<number>(0);
-  const [instructorRating, setInstructorRating] = useState<number>(0);
-  const [enrolledStudents, setEnrolledStudents] = useState<number>(0);
-  const [completedStudents, setCompletedStudents] = useState<number>(0);
-  const [performanceCategories, setPerformanceCategories] = useState<any>({});
-  const [loading, setLoading] = useState<boolean>(true);
+const InstructorAnalyticsPage: React.FC = () => {
+  const [analytics, setAnalytics] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchAnalytics = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/dashboard/instructor/analytics");
+      const session = localStorage.getItem("session");
+      if (session) {
+        const parsedSession = JSON.parse(session);
+        const response = await fetch(`http://localhost:3000/progress/dashboard/instructor/analytics?course_id=${parsedSession.course_id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${parsedSession.accessToken}`,
+          },
+        });
         const data = await response.json();
-        setEngagementData(data.engagementTrends || []);
-        setContentEffectiveness(data.contentEffectiveness || []);
-        setAssessmentResults(data.assessmentResults || []);
-        setEnrolledStudents(data.enrolledStudents || 0);
-        setCompletedStudents(data.completedStudents || 0);
-        setPerformanceCategories(data.performanceCategories || {});
-        setModuleRatings(data.moduleRatings || []);
-        setCourseRating(data.courseRating || 0);
-        setInstructorRating(data.instructorRating || 0);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching analytics:", error);
-        setLoading(false);
+        setAnalytics({
+          ...data,
+          avgCompletionRate: isNaN(data.avgCompletionRate) ? 0 : data.avgCompletionRate,
+          avgScore: isNaN(data.avgScore) ? 0 : data.avgScore,
+          avgCourseRating: isNaN(data.avgCourseRating) ? 0 : data.avgCourseRating,
+          avgInstructorRating: isNaN(data.avgInstructorRating) ? 0 : data.avgInstructorRating,
+        });
+      } else {
+        router.push("/login");
       }
     };
 
     fetchAnalytics();
-  }, []);
+  }, [router]);
 
-  const handleDownload = () => {
-    const data = {
-      engagementData,
-      contentEffectiveness,
-      assessmentResults,
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "analytics.json";
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleDownload = async () => {
+    const session = localStorage.getItem("session");
+    if (session) {
+      const parsedSession = JSON.parse(session);
+      const response = await fetch(`http://localhost:3000/progress/download-analytics?course_id=${parsedSession.course_id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${parsedSession.accessToken}`,
+        },
+      });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'analytics.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="loading">
-        Loading...
-      </div>
-    );
+  if (!analytics) {
+    return <div>Loading...</div>;
   }
 
+  const data = {
+    labels: ['Below Average', 'Average', 'Above Average', 'Excellent'],
+    datasets: [
+      {
+        label: 'Student Performance',
+        data: [analytics.belowAverage, analytics.average, analytics.aboveAverage, analytics.excellent],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      },
+    ],
+  };
+
   return (
-    <div className="analytics-container">
+    <div className="instructor-analytics-page">
       <h1>Instructor Analytics</h1>
-      <div className="chart-container">
-        <h2>Student Engagement</h2>
-        <Line
-          data={{
-            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-            datasets: [
-              {
-                label: "Engagement",
-                data: engagementData,
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                fill: false
-              }
-            ]
-          }}
-        />
-      </div>
-      <div className="chart-container">
-        <h2>Module Ratings</h2>
-        <ul>
-          {moduleRatings.map((rating, index) => (
-            <li key={index}>Module {index + 1}: {rating}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="chart-container">
-        <h2>Course Rating</h2>
-        <p>{courseRating}</p>
-      </div>
-      <div className="chart-container">
-        <h2>Instructor Rating</h2>
-        <p>{instructorRating}</p>
-      </div>
-      <div className="chart-container">
-        <h2>Enrolled Students</h2>
-        <p>{enrolledStudents}</p>
-      </div>
-      <div className="chart-container">
-        <h2>Completed Students</h2>
-        <p>{completedStudents}</p>
-      </div>
-      <div className="chart-container">
-        <h2>Performance Categories</h2>
-        <ul>
-          <li>Below Average: {performanceCategories.belowAverage}</li>
-          <li>Average: {performanceCategories.average}</li>
-          <li>Above Average: {performanceCategories.aboveAverage}</li>
-          <li>Excellent: {performanceCategories.excellent}</li>
-        </ul>
-      </div>
-      <div className="chart-container">
-        <h2>Content Effectiveness</h2>
-        <Bar
-          data={{
-            labels: ["Content 1", "Content 2", "Content 3", "Content 4"],
-            datasets: [
-              {
-                label: "Effectiveness",
-                data: contentEffectiveness,
-                backgroundColor: "rgba(153, 102, 255, 0.6)"
-              }
-            ]
-          }}
-        />
-      </div>
-      <div className="chart-container">
-        <h2>Assessment Results</h2>
-        <Line
-          data={{
-            labels: ["Assessment 1", "Assessment 2", "Assessment 3", "Assessment 4"],
-            datasets: [
-              {
-                label: "Results",
-                data: assessmentResults,
-                backgroundColor: "rgba(255, 159, 64, 0.6)",
-                borderColor: "rgba(255, 159, 64, 1)",
-                fill: false
-              }
-            ]
-          }}
-        />
-      </div>
-      <button className="download-button" onClick={handleDownload}>
-        Download Analytics
-      </button>
+      <p>Total Students: {analytics.totalStudents}</p>
+      <p>Average Completion Rate: {analytics.avgCompletionRate}%</p>
+      <p>Average Score: {analytics.avgScore}</p>
+      <p>Average Course Rating: {analytics.avgCourseRating}</p>
+      <p>Average Instructor Rating: {analytics.avgInstructorRating}</p>
+      <h2>Student Engagement</h2>
+      <Bar data={data} />
+      <button onClick={handleDownload}>Download Analytics</button>
     </div>
   );
 };
 
-export default InstructorAnalytics;
+export default InstructorAnalyticsPage;
