@@ -28,7 +28,7 @@ const PerformanceMetrics: React.FC = () => {
 
         // Ensure data.modules and data.averageScores exist
         if (data.modules && data.averageScores) {
-          const performanceMetric = data.averageScores.reduce((a, b) => a + b, 0) / data.averageScores.length;
+          const performanceMetric = data.averageScores.reduce((a: number, b: number) => a + b, 0) / data.averageScores.length;
           const filteredModules = data.modules.filter((module: any) => {
             if (performanceMetric < 50) return module.difficulty === 'Easy';
             if (performanceMetric < 70) return module.difficulty === 'Medium';
