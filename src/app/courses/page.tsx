@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styles from './CourseDashboard.module.css';
 
 interface Course {
   id: string;
@@ -102,34 +103,30 @@ const CoursesDashboard: React.FC = () => {
     }
   };
 
-  return (
-    <div className="courseDashboard">
-      <h1>Course Dashboard</h1>
-      <section>
-        <h2>All Courses</h2>
-        {loading ? (
-          <p>Loading courses...</p>
-        ) : courses.length > 0 ? (
-          <ul>
-            {courses.map((course) => (
-              <li key={course.id}>
-                <h3>{course.title}</h3>
-                <p>
-                  <strong>Description:</strong> {course.description}
-                </p>
-                <p>
-                  <strong>Category:</strong> {course.category}
-                </p>
-                <p>
-                  <strong>Difficulty:</strong> {course.difficulty}
-                </p>
-                <p>
-                  <strong>Created By:</strong> {course.createdBy}
-                </p>
-                {!course.isDeleted && (
-                  <button onClick={() => handleDelete(course.id)}>
-                    Delete
-                  </button>
+
+    return (
+        <div className="styles.courseDashboard">
+            <h1>Course Dashboard</h1>
+            <section>
+                <h2>All Courses</h2>
+                {loading ? (
+                    <p>Loading courses...</p>
+                ) : courses.length > 0 ? (
+                    <ul>
+                        {courses.map((course) => (
+                            <li key={course.title}>
+                                <h3>{course.title}</h3>
+                                <p><strong>Description:</strong> {course.description}</p>
+                                <p><strong>Category:</strong> {course.category}</p>
+                                <p><strong>Difficulty:</strong> {course.difficulty}</p>
+                                <p><strong>Created By:</strong> {course.createdBy}</p>
+                                {!course.isDeleted && <button onClick={() => handleDelete(course.title)}>Delete</button>}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No courses available.</p>
+
                 )}
               </li>
             ))}

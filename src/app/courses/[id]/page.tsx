@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import './CourseProfile.css';
 
 interface Course {
   _id: string;
@@ -192,11 +193,14 @@ const CoursesProfile: React.FC = () => {
         setCourses(
           filteredCourses.filter((course: Course) => !course.isDeleted)
         );
-      }
-    } catch (error) {
-      console.error("Error searching courses:", error);
-    }
-  };
+
+        setCourses(filteredCourses);
+    };
+
+    return (
+        <div className="CourseProfile">
+            <h1>Course Management</h1>
+
 
   return (
     <div className="courseProfile">
@@ -207,16 +211,60 @@ const CoursesProfile: React.FC = () => {
         <button onClick={handleEnrolledCourses}>Fetch Enrolled Courses</button>
       </section>
 
-      <section>
-        <h2>Search Courses</h2>
-        <input
-          type="text"
-          placeholder="Search by title, description, or category"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </section>
+
+            <section>
+                <h2>Update Course</h2>
+                <input
+                    type="text"
+                    placeholder="Course ID"
+                    value={updateCourseId}
+                    onChange={(e) => setUpdateCourseId(e.target.value)}
+                />
+                <div>
+                    <input
+                        type="text"
+                        placeholder="New Title"
+                        value={updateData.title || ""}
+                        onChange={(e) =>
+                            setUpdateData({ ...updateData, title: e.target.value })
+                        }
+                    />
+                    <input
+                        type="text"
+                        placeholder="New Description"
+                        value={updateData.description || ""}
+                        onChange={(e) =>
+                            setUpdateData({ ...updateData, description: e.target.value })
+                        }
+                    />
+                    <input
+                        type="text"
+                        placeholder="New Category"
+                        value={updateData.category || ""}
+                        onChange={(e) =>
+                            setUpdateData({ ...updateData, category: e.target.value })
+                        }
+                    />
+                    
+                    <select
+                        value={updateData.difficulty || ""}
+                        onChange={(e) =>
+                        setUpdateData({ ...updateData, difficulty: e.target.value as "Beginner" || "Intermediate" || "Advanced" })
+                        }
+>
+                        <option value="" disabled>
+                            Select Difficulty
+                        </option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    
+                </div>
+                <button onClick={() => handleUpdate(updateCourseId, updateData)}>
+                    Update Course
+                </button>
+            </section>
 
       <section>
         <h2>Update Course</h2>
