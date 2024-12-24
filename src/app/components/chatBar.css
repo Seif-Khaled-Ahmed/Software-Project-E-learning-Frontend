@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .chat-popup {
+    @apply fixed bottom-5 right-5 w-72 h-96 bg-white border rounded-lg shadow-lg flex flex-col;
+  }
+
+  .popup-content {
+    @apply flex-grow flex flex-col;
+  }
+
+  .input-wrapper {
+    @apply mt-auto flex;
+  }
+
+  .message-input {
+    @apply flex-grow px-2 py-1 border border-gray-300 rounded-l-md focus:outline-none focus:border-blue-500;
+  }
+
+  .send-button {
+    @apply ml-2 px-4 py-1 bg-blue-500 text-white rounded-r-md hover:bg-blue-600 focus:outline-none;
+  }
+
+  .close-button {
+    @apply mt-2 self-end px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none;
+  }
+}
