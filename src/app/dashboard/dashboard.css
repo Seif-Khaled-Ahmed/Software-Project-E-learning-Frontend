@@ -2,6 +2,7 @@
 
 .dashboard-layout {
   display: flex;
+
   min-height: 100vh;
   background-color: #121212; /* Black background */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -10,7 +11,7 @@
 
 .dashboard-content {
   flex: 1;
-  padding: 10px;
+  padding: 1px;
   margin-left: 250px; /* Space for the sidebar */
   transition: margin-left 0.3s ease;
 }
@@ -22,8 +23,8 @@
   position: fixed; /* Ensure fixed positioning */
   right: 0;
   top: 0;
-  left: 250px; /* Align with the main content area */
-  width: calc(100% - 250px); /* Adjust width calculation */
+  left: 20px; /* Align with the main content area */
+  width: calc(100% - 100px); /* Adjust width calculation */
   height: 80px; /* Fixed height */
   z-index: 5;
   transform: scale(1.1);
