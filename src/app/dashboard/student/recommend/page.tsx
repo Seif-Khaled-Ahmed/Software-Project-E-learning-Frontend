@@ -31,6 +31,7 @@ const RecommendationPage: React.FC = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${parsedSession.accessToken}`,
             },
             body: JSON.stringify({ userId: parsedSession._id }), // Ensure userId is sent
           });
