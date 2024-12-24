@@ -10,14 +10,9 @@
   position: fixed;
   overflow-y: auto;
   top: 0;
-  left: -250px; /* Start hidden off-screen */
+  left: 0;
   z-index: 20;
-  transition: left 0.3s ease; /* Smooth transition for sliding */
-}
-
-/* Ensure the sidebar shows on hover */
-.sidebar:hover {
-  left: 0; /* Slide in when hovered */
+  transition: left 0.3s ease;
 }
 
 .sidebar::before {
@@ -29,7 +24,7 @@
   border-left: 25px solid transparent;
 }
 
-/* Profile section and other styles remain the same */
+/* ... notification styles ... */
 
 .profile-section {
   display: flex;
