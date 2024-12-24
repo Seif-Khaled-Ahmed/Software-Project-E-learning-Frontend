@@ -86,7 +86,7 @@ const CoursesDashboard: React.FC = () => {
     };
 
     return (
-        <div className="styles.courseDashboard">
+        <div className="styles.CourseDashboard">
             <h1>Course Dashboard</h1>
             <section>
                 <h2>All Courses</h2>
