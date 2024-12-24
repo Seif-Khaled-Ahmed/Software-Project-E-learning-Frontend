@@ -25,23 +25,13 @@ const Sidebar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("session");
-    // Redirect to the home page after 2 seconds
-    setTimeout(() => {
-      router.push("/");
-    }, 100);
+    router.push("/");
   };
 
   const renderLinks = () => {
     if (profile?.role === "student") {
       return (
         <>
-          <li>
-            <a
-              href="/dashboard/student"
-              onClick={() => router.push("/dashboard/student")}>
-              Dashboard
-            </a>
-          </li>
           <li>
             <a
               href="/dashboard/profile"
@@ -111,6 +101,13 @@ const Sidebar: React.FC = () => {
               href="/dashboard/profile"
               onClick={() => router.push("/dashboard/profile")}>
               Profile
+            </a>
+          </li>
+          <li>
+            <a
+              href="/dashboard/instructor/quiz"
+              onClick={() => router.push("/dashboard/profile")}>
+              quiz
             </a>
           </li>
           <li>
@@ -205,16 +202,23 @@ const Sidebar: React.FC = () => {
 
     fetchProfile();
   }, [router]);
-
+  const handleProfilePictureClick = () => {
+    router.push("/dashboard/profile");
+  };
   return (
     <aside className="sidebar">
       <div className="notification"></div>
       {profile && (
         <div className="profile-section">
           <img
-            src={profile.profilePictureUrl || "/images/profiledefault.jpg"}
+            src={
+              `http://localhost:3000${profile?.profilePictureUrl}` ||
+              "/images/profiledefault.jpg"
+            }
             alt="Profile Picture"
             className="profile-picture"
+            onClick={handleProfilePictureClick} // Add onClick event
+            style={{ cursor: "pointer" }}
           />
           <h2>{profile.name}</h2>
           <p>{profile.role}</p>

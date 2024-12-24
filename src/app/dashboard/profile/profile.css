@@ -47,9 +47,10 @@ body {
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #673ab7; /* Darker border color */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+  border: 4px solid #714bb4; /* Darker border color */
+  box-shadow: 0 5px 80px rgba(249, 59, 59, 0.5); /* More pronounced shadow */
   margin-bottom: 20px;
+
   transition: transform 0.3s ease;
 }
 
@@ -185,17 +186,6 @@ body {
     max-width: none;
   }
 
-  .profile-picture {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 15px;
-  }
-
-  .profile-title {
-    font-size: 2.2rem;
-    margin-top: 20px;
-  }
-
   .input-group label {
     margin-bottom: 8px;
     font-size: 1rem;
@@ -245,4 +235,47 @@ body {
     padding: 10px 20px;
     font-size: 1rem;
   }
+}
+/* profile.css */
+
+.subjects-dropdown {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #050303;
+  border-radius: 4px;
+  background-color: #3b1e67;
+  font-size: 16px;
+  color: #fff;
+}
+
+.subjects-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px;
+  color: #eed9d9;
+}
+
+.subjects-list li {
+  background-color: #0f0909;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subjects-list li button {
+  background-color: #bf5656;
+  border: none;
+  color: rgb(5, 3, 3);
+  padding: 5px 10px;
+
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.subjects-list li button:hover {
+  background-color: #e60000;
 }

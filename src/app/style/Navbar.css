@@ -1,98 +1,39 @@
-/* Navbar.css */
+/* src/app/style/Navbar.css */
 
-/* General Body Styles (for context and consistency) */
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4; /* Soft background color */
-  color: #333; /* Dark gray text */
-}
-
-/* Navbar Container */
 .navbar {
-  background-color: #fff; /* White background for contrast */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  padding: 15px 20px; /* Comfortable padding */
-  border-radius: 10px; /* Slightly rounded corners */
-  margin: 20px; /* Margin around the navbar */
-  position: relative; /* For potential absolute positioning of elements inside */
-  z-index: 10;
+  display: flex;
+  justify-content: space-around; /* Distribute space around items */
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #212121;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90%;
+  z-index: 100;
 }
 
-/* Unordered List */
 .navbar ul {
   list-style: none;
-  padding: 0;
   margin: 0;
-  display: flex; /* Align items horizontally */
-  justify-content: space-around; /* Even spacing between items */
+  padding: 0;
+  display: flex;
 }
 
-/* List Items */
 .navbar li {
-  /* No specific styles needed as they are inline by default due to flex */
+  margin-right: 2rem;
 }
 
-/* Links */
 .navbar a {
   text-decoration: none;
-  color: #007bff; /* Primary blue color - adjust as needed */
-  font-weight: 600; /* Slightly bolder text */
-  padding: 10px 15px; /* Padding around the text */
-  border-radius: 5px; /* Rounded corners for links */
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
-  display: block; /* Makes the clickable area larger */
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-/* Hover Effect */
 .navbar a:hover {
-  background-color: #e0f2ff; /* Light blue background on hover */
-  color: #0056b3; /* Darker blue text on hover */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); /* Subtle shadow on hover */
+  color: #9c27b0;
 }
 
-/* Active Link (Optional - you might need to handle this in your React component) */
-.navbar a.active {
-  background-color: #cce5ff; /* Light blue background for active link */
-  color: #004085; /* Darker blue for active link */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Slightly more pronounced shadow */
-}
-
-/* Responsive Design (Adjust breakpoints as needed) */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 10px;
-    margin: 10px;
-    border-radius: 0;
-  }
-
-  .navbar ul {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    align-items: center;
-  }
-
-  .navbar li {
-    margin-bottom: 10px; /* Add margin between stacked items */
-  }
-
-  .navbar a {
-    text-align: center;
-  }
-}
-
-/* Animation (Optional) */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.navbar {
-  animation: fadeIn 0.5s ease-out;
-}
+/* ... (styles for the SearchComponent) ... */
