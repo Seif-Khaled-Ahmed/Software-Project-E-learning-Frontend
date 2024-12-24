@@ -13,6 +13,7 @@ const PerformanceMetrics: React.FC = () => {
   const [completionRates, setCompletionRates] = useState<number[]>([]);
   const [averageScores, setAverageScores] = useState<number[]>([]);
   const [engagementTrends, setEngagementTrends] = useState<number[]>([]);
+  const [recommendedModules, setRecommendedModules] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -21,9 +22,21 @@ const PerformanceMetrics: React.FC = () => {
       try {
         const response = await fetch("http://localhost:3000/dashboard/student/performance-metrics");
         const data = await response.json();
-        setCompletionRates(data.completionRates);
-        setAverageScores(data.averageScores);
-        setEngagementTrends(data.engagementTrends);
+        setCompletionRates(data.completionRates || []);
+        setAverageScores(data.averageScores || []);
+        setEngagementTrends(data.engagementTrends || []);
+
+        // Ensure data.modules and data.averageScores exist
+        if (data.modules && data.averageScores) {
+          const performanceMetric = data.averageScores.reduce((a, b) => a + b, 0) / data.averageScores.length;
+          const filteredModules = data.modules.filter((module: any) => {
+            if (performanceMetric < 50) return module.difficulty === 'Easy';
+            if (performanceMetric < 70) return module.difficulty === 'Medium';
+            return module.difficulty === 'Hard';
+          });
+          setRecommendedModules(filteredModules);
+        }
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching metrics:", error);
@@ -93,6 +106,14 @@ const PerformanceMetrics: React.FC = () => {
             ],
           }}
         />
+      </div>
+      <div className="chart-container">
+        <h2>Recommended Modules</h2>
+        <ul>
+          {recommendedModules.map((module, index) => (
+            <li key={index}>{module.name} - {module.difficulty}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
