@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar"; // Adjust the import path accordingly
 import Sidebar from "../components/Sidebar"; // Adjust the import path accordingly
 import StudentDashboard from "./student/page"; // Ensure this path is correct
 import InstructorDashboard from "./instructor/page"; // Ensure this path is correct
