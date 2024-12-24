@@ -71,7 +71,7 @@ const Sidebar: React.FC = () => {
               Performance Metrics
             </a>
           </li>
-          
+
           <li>
             <a
               href="/dashboard/student/search-instructors"
@@ -145,7 +145,7 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <a
-              href="/dashboard/student/update-courses"
+              href="/dashboard/instructor/update-courses"
               onClick={() =>
                 router.push("/dashboard/instructor/update-courses")
               }>
