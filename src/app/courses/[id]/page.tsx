@@ -1,6 +1,7 @@
 "use-client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import './CourseProfile.css';
 
 const CoursesProfile: React.FC = () => {
     const [courses, setCourses] = useState<{
@@ -181,7 +182,7 @@ const CoursesProfile: React.FC = () => {
     };
 
     return (
-        <div className="courseProfile">
+        <div className="CourseProfile">
             <h1>Course Management</h1>
 
             <section>

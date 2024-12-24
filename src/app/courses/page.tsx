@@ -1,6 +1,7 @@
 "use-client";
 import React , { useState , useEffect } from "react";
 import { useRouter } from "next/navigation";
+import styles from './CourseDashboard.module.css';
 
 const CoursesDashboard: React.FC = () => {
     const [courses, setCourses] = useState<{
@@ -85,7 +86,7 @@ const CoursesDashboard: React.FC = () => {
     };
 
     return (
-        <div className="courseDashboard">
+        <div className="styles.courseDashboard">
             <h1>Course Dashboard</h1>
             <section>
                 <h2>All Courses</h2>

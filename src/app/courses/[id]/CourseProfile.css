@@ -1,0 +1,70 @@
+.courseProfile {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.courseProfile h1 {
+    font-size: 2em;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.courseProfile h2 {
+    font-size: 1.5em;
+    margin: 20px 0 10px;
+    color: #555;
+}
+
+
+.courseProfile section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.courseProfile section:last-child {
+    margin-bottom: 0;
+}
+
+
+.courseProfile input,
+.courseProfile select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.courseProfile select {
+    background-color: #fff;
+}
+
+
+.courseProfile button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.courseProfile button:hover {
+    background-color: #0056b3;
+}
+
