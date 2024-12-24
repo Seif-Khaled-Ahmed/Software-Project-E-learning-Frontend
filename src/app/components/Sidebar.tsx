@@ -93,7 +93,7 @@ const Sidebar: React.FC = () => {
               onClick={() =>
                 router.push("/dashboard/instructor/view-students")
               }>
-              View-Studnets
+              View-Students
             </a>
           </li>
           <li>
