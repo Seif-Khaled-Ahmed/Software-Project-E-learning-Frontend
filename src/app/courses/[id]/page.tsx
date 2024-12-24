@@ -233,14 +233,21 @@ const CoursesProfile: React.FC = () => {
                             setUpdateData({ ...updateData, category: e.target.value })
                         }
                     />
-                    <input
-                        type="text"
-                        placeholder="New Difficulty"
+                    
+                    <select
                         value={updateData.difficulty || ""}
                         onChange={(e) =>
-                            setUpdateData({ ...updateData, difficulty: 'Beginner' })
+                        setUpdateData({ ...updateData, difficulty: e.target.value as "Beginner" || "Intermediate" || "Advanced" })
                         }
-                    />
+>
+                        <option value="" disabled>
+                            Select Difficulty
+                        </option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    
                 </div>
                 <button onClick={() => handleUpdate(updateCourseId, updateData)}>
                     Update Course
