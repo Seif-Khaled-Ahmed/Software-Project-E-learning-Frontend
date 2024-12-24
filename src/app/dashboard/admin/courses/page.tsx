@@ -1,7 +1,6 @@
 "use client"
 import React , { useState , useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 const CoursesDashboard: React.FC = () => {
     const [courses, setCourses] = useState<{
         title: string,
@@ -85,42 +84,65 @@ const CoursesDashboard: React.FC = () => {
     };
 
     return (
-        <div className="courseDashboard">
-            <h1>Course Dashboard</h1>
-            <section>
-                <h2>All Courses</h2>
-                {loading ? (
-                    <p>Loading courses...</p>
-                ) : courses.length > 0 ? (
-                    <ul>
-                        {courses.map((course) => (
-                            <li key={course.title}>
-                                <h3>{course.title}</h3>
-                                <p><strong>Description:</strong> {course.description}</p>
-                                <p><strong>Category:</strong> {course.category}</p>
-                                <p><strong>Difficulty:</strong> {course.difficulty}</p>
-                                <p><strong>Created By:</strong> {course.createdBy}</p>
-                                {!course.isDeleted && <button onClick={() => handleDelete(course.title)}>Delete</button>}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No courses available.</p>
-                )}
-            </section>
-            
-            <section>
-                <h2>Search Courses</h2>
-                <input
-                    type="text"
-                    placeholder="Search by title, description, or category"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <button onClick={() => handleSearch()}>Search</button>
-            </section>
+        <div className={"courseDashboard"}>
+          <h1>Course Dashboard</h1>
+    
+          {/* Section: All Courses */}
+          <section>
+            <h2>All Courses</h2>
+            {loading ? (
+              <p>Loading courses...</p>
+            ) : courses.length > 0 ? (
+              <ul className="courseList">
+                {courses.map((course) => (
+                  <li key={course.title} className="courseItem">
+                    <h3>{course.title}</h3>
+                    <p>
+                      <strong>Description:</strong> {course.description}
+                    </p>
+                    <p>
+                      <strong>Category:</strong> {course.category}
+                    </p>
+                    <p>
+                      <strong>Difficulty:</strong> {course.difficulty}
+                    </p>
+                    <p>
+                      <strong>Created By:</strong> {course.createdBy}
+                    </p>
+                    {!course.isDeleted && (
+                      <button
+                        className="deleteButton"
+                        onClick={() => handleDelete(course.title)}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No courses available.</p>
+            )}
+          </section>
+    
+          {/* Section: Search Courses */}
+          <section className="searchSection">
+            <h2>Search Courses</h2>
+            <div className="searchContainer">
+              <input
+                type="text"
+                className="searchInput"
+                placeholder="Search by title, description, or category"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button className="searchButton" onClick={handleSearch}>
+                Search
+              </button>
+            </div>
+          </section>
         </div>
-    );
+      );
 };
 
 export default CoursesDashboard;
