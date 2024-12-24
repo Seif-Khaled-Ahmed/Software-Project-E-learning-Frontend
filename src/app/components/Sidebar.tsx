@@ -49,7 +49,9 @@ const Sidebar: React.FC = () => {
           <li>
             <a
               href="/dashboard/student/enrolled-courses"
-              onClick={() => router.push("dashboard/student/enrolled-courses")}>
+              onClick={() =>
+                router.push("dashboard/student/enrolled-courses")
+              }>
               Enrolled Courses
             </a>
           </li>
@@ -202,9 +204,11 @@ const Sidebar: React.FC = () => {
 
     fetchProfile();
   }, [router]);
+
   const handleProfilePictureClick = () => {
     router.push("/dashboard/profile");
   };
+
   return (
     <aside className="sidebar">
       <div className="notification"></div>
@@ -227,10 +231,20 @@ const Sidebar: React.FC = () => {
       <nav>
         <ul>
           {renderLinks()}
-          <button className="logout-button">
-            <li onClick={handleLogout}>Logout</li>
-          </button>
+          <li>
+            <a
+              href="/forums"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent page reload
+                router.push("/forums"); // Navigate to the forums page
+              }}>
+              Forums
+            </a>
+          </li>
         </ul>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
       </nav>
     </aside>
   );
